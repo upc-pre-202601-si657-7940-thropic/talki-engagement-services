@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  progress-service:
+    build: ./progress-service
+    ports:
+      - "8089:8089"
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  gamification-service:
+    build: ./gamification-service
+    ports:
+      - "8090:8090"
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
