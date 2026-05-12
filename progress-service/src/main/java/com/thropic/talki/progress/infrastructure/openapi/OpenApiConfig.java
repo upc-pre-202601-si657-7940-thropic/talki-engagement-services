@@ -42,7 +42,7 @@ public class OpenApiConfig {
                                 .name("Académico — UPC SI657 2026-10")))
                 .servers(List.of(
                         new Server().url("http://localhost:8089").description("Local (perfil dev)"),
-                        new Server().url("https://api.talki.app").description("Producción (Railway)")
+                        new Server().url("https://api.talki.lat").description("Producción (Railway)")
                 ));
     }
 }
